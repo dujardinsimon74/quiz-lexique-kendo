@@ -79,7 +79,7 @@ export const LEXIQUE: Term[] = [
   },
   {
     jp: "Byôki",
-    ans: "Maladie, maux (voir Yotsu no byôki)",
+    ans: "Maladie, maux",
     cat: "Fondamentaux",
   },
 
@@ -102,10 +102,10 @@ export const LEXIQUE: Term[] = [
     ans: "Arme de kendo en quatre lattes de bambou",
     cat: "Équipement",
   },
-  { jp: "Bokken / Bokutô", ans: "Sabre de bois plein", cat: "Équipement" },
+  { jp: "Bokutô", ans: "Sabre de bois plein", cat: "Équipement" },
   {
     jp: "Katana",
-    ans: "Sabre japonais (tranchant vers le haut)",
+    ans: "Il s’agit généralement du long sabre passé dans la ceinture",
     cat: "Équipement",
   },
   { jp: "Tsuba", ans: "Garde de l'arme", cat: "Équipement" },
@@ -242,7 +242,7 @@ export const LEXIQUE: Term[] = [
     cat: "Gardes",
   },
   {
-    jp: "Waki gamae",
+    jp: "Waki no kamae",
     ans: "Garde latérale basse, pointe dirigée vers l'arrière",
     cat: "Gardes",
   },
@@ -279,7 +279,7 @@ export const LEXIQUE: Term[] = [
 
   // Distances
   {
-    jp: "Ma-aï",
+    jp: "Ma aï",
     ans: "Intervalle espace-temps entre les deux adversaires",
     cat: "Distances",
   },
@@ -350,7 +350,7 @@ export const LEXIQUE: Term[] = [
     ans: "Zones valables des protections pour frapper",
     cat: "Techniques",
   },
-  { jp: "Ha-suji", ans: "Sens du tranchant de l'arme", cat: "Techniques" },
+  { jp: "Ha suji", ans: "Sens du tranchant de l'arme", cat: "Techniques" },
   {
     jp: "Te no uchi",
     ans: "Contact des mains avec la poignée, frappe nette",
@@ -476,32 +476,32 @@ export const LEXIQUE: Term[] = [
   },
   {
     jp: "Harai waza",
-    ans: "Chasser l'arme adverse de bas en haut",
+    ans: "Technique d’attaque qui consiste à chasser en «brossant» l'arme adverse de bas en haut",
     cat: "Waza",
   },
   {
     jp: "Hari waza",
-    ans: "Écarter l'arme adverse par un mouvement latéral court et sec",
+    ans: "Technique d’attaque qui consiste à écarter l'arme adverse par un mouvement latéral court et sec",
     cat: "Waza",
   },
   {
     jp: "Nuki waza",
-    ans: "Esquive + riposte dans le même mouvement",
+    ans: "Technique d'esquive + riposte dans le même mouvement",
     cat: "Waza",
   },
   {
     jp: "Kaeshi waza",
-    ans: "Défense par renversement puis riposte",
+    ans: "Technique de défense par renversement puis riposte",
     cat: "Waza",
   },
   {
     jp: "Suriage waza",
-    ans: "Défense en frottant vers le haut puis riposte",
+    ans: "Technique de défense en frottant vers le haut puis riposte",
     cat: "Waza",
   },
   {
     jp: "Debana waza",
-    ans: "Attaque sur l'intention ou le début de l'attaque adverse",
+    ans: "Technique d'attaque sur l'intention ou le début de l'attaque adverse",
     cat: "Waza",
   },
   { jp: "Renzoku waza", ans: "Techniques portées successivement", cat: "Waza" },
@@ -513,7 +513,7 @@ export const LEXIQUE: Term[] = [
   { jp: "San dan waza", ans: "Trois attaques enchaînées", cat: "Waza" },
   { jp: "Ai nuki", ans: "Esquives simultanées", cat: "Waza" },
   {
-    jp: "Ashi barai / gake",
+    jp: "Ashi barai",
     ans: "Fait de chasser ou d'accrocher la jambe de l'adversaire",
     cat: "Waza",
   },
@@ -545,7 +545,7 @@ export const LEXIQUE: Term[] = [
   { jp: "Oi uchi", ans: "Attaque en poursuite", cat: "Waza" },
   {
     jp: "Osae waza",
-    ans: "Technique consistant à maintenir l'arme adverse avec sa propre arme",
+    ans: "Technique d’attaque de l’arme adverse avec son arme, par un mouvement circulaire des mains à partir de la poignée.",
     cat: "Waza",
   },
   { jp: "Uchi kaeshi", ans: "Autre appellation du Kiri kaeshi", cat: "Waza" },
@@ -588,7 +588,7 @@ export const LEXIQUE: Term[] = [
     cat: "Entraînement",
   },
   {
-    jp: "Gokaku geiko / Ji geiko",
+    jp: "Ji geiko",
     ans: "Assaut libre entre partenaires de même niveau",
     cat: "Entraînement",
   },
@@ -652,7 +652,11 @@ export const LEXIQUE: Term[] = [
   { jp: "Men o tore", ans: "Enlevez le casque", cat: "Commandements" },
   { jp: "Men o tsuke", ans: "Mettez le casque", cat: "Commandements" },
   { jp: "Osame tô", ans: "Rengainez", cat: "Commandements" },
-  { jp: "Sage tô", ans: "Baissez le sabre", cat: "Commandements" },
+  {
+    jp: "Sage tô",
+    ans: "«baissez le sabre». Position du sabre en bas légèrement à gauche.",
+    cat: "Commandements",
+  },
 
   // Compétition
   { jp: "Shiai", ans: "Compétition, combat arbitré", cat: "Compétition" },
@@ -733,7 +737,7 @@ export const LEXIQUE: Term[] = [
   { jp: "Hantai", ans: "Opposé, contraire", cat: "Arbitrage" },
   {
     jp: "Hantei",
-    ans: "Jugement, décision de l'arbitre pour désigner le vainqueur",
+    ans: "Jugement, décision,appel de l’arbitre central aux deux autres arbitres pour désigner, à la majorité, le vainqueur",
     cat: "Arbitrage",
   },
   { jp: "Hata", ans: "Drapeau (utilisé par les arbitres)", cat: "Arbitrage" },
@@ -845,7 +849,7 @@ export const LEXIQUE: Term[] = [
   { jp: "Ichi", ans: "Un", cat: "Chiffres" },
   { jp: "Ni", ans: "Deux", cat: "Chiffres" },
   { jp: "San", ans: "Trois", cat: "Chiffres" },
-  { jp: "Shi / Yon", ans: "Quatre", cat: "Chiffres" },
+  { jp: "Shi", ans: "Quatre", cat: "Chiffres" },
   { jp: "Go", ans: "Cinq", cat: "Chiffres" },
   { jp: "Roku", ans: "Six", cat: "Chiffres" },
   { jp: "Shichi", ans: "Sept", cat: "Chiffres" },
