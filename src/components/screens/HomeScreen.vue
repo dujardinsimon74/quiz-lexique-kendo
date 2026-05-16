@@ -1,105 +1,121 @@
 <template>
     <div class="animate-fade-in space-y-4">
+
         <!-- En-tête zen -->
-        <div class="text-center py-8">
-            <div
-                class="font-jp text-7xl font-black select-none kanji-hero mb-3"
-            >
-                剣道
-            </div>
+        <div class="text-center py-6">
+            <div class="font-jp text-7xl font-black select-none kanji-hero mb-3">剣道</div>
             <div class="divider-red mx-auto w-20 mb-3" />
-            <p class="section-label tracking-[0.22em]">Maîtrise du Lexique</p>
+            <p class="section-label tracking-[0.22em]">Maîtrise du Lexique · {{ allCount }} termes</p>
         </div>
 
-        <!-- Direction -->
-        <div class="glass rounded-2xl p-5">
-            <p class="section-label mb-3">Direction</p>
-            <div class="flex flex-col gap-2">
+        <!-- ── Mode Quiz QCM ── -->
+        <div class="mode-card glass rounded-2xl p-5">
+
+            <!-- En-tête carte -->
+            <div class="flex items-center gap-3 mb-4">
+                <div class="mode-icon font-jp mode-icon--qcm">問</div>
+                <div>
+                    <p class="text-sm font-bold" style="color:#261e16;">Mode Quiz</p>
+                    <p class="text-xs" style="color:#6a5a48;">QCM · 4 propositions · JP ↔ FR</p>
+                </div>
+            </div>
+
+            <!-- Direction -->
+            <p class="section-label mb-2">Direction</p>
+            <div class="flex flex-col gap-1.5 mb-4">
                 <button
                     v-for="m in MODES"
                     :key="m.id"
                     class="mode-btn"
-                    :class="store.mode === m.id ? 'mode-on' : 'mode-off'"
+                    :class="store.mode === m.id ? 'mode-on--qcm' : 'mode-off'"
                     @click="store.setMode(m.id)"
                 >
-                    <span class="text-base">{{ m.icon }}</span>
-                    <span class="flex-1 text-left text-sm font-medium">{{
-                        m.label
-                    }}</span>
-                    <span v-if="store.mode === m.id" class="check">○</span>
+                    <span class="mode-tag-text">{{ m.icon }}</span>
+                    <span class="flex-1 text-left text-sm font-medium">{{ m.label }}</span>
+                    <span v-if="store.mode === m.id" class="check check--qcm">○</span>
                 </button>
             </div>
-        </div>
 
-        <!-- Nombre de questions -->
-        <div class="glass rounded-2xl p-5">
-            <p class="section-label mb-3">Nombre de questions</p>
-            <div class="flex flex-wrap gap-2">
+            <!-- Nombre de questions -->
+            <p class="section-label mb-2">Questions</p>
+            <div class="flex flex-wrap gap-2 mb-4">
                 <button
                     v-for="cnt in COUNTS"
                     :key="cnt"
                     class="count-btn"
-                    :class="store.count === cnt ? 'count-on' : 'count-off'"
+                    :class="store.count === cnt ? 'count-on--qcm' : 'count-off'"
                     @click="store.setCount(cnt)"
-                >
-                    {{ cnt === allCount ? "Toutes" : cnt }}
-                </button>
+                >{{ cnt === allCount ? "Toutes" : cnt }}</button>
             </div>
-        </div>
 
-        <!-- Stats -->
-        <div class="glass rounded-2xl p-4 flex items-center text-center">
-            <div class="flex-1 py-1">
-                <div class="stat-n">{{ allCount }}</div>
-                <div class="stat-l">termes</div>
-            </div>
-            <div class="sep" />
-            <div class="flex-1 py-1">
-                <div class="stat-n">
-                    {{
-                        store.count >= allCount
-                            ? "Toutes"
-                            : Math.min(store.count, allCount)
-                    }}
-                </div>
-                <div class="stat-l">questions</div>
-            </div>
-            <div class="sep" />
-            <div class="flex-1 py-1">
-                <div class="stat-n">
-                    {{ store.mode === "both" ? "×2" : "×1" }}
-                </div>
-                <div class="stat-l">
-                    direction{{ store.mode === "both" ? "s" : "" }}
-                </div>
-            </div>
-        </div>
-
-        <!-- Reprendre la partie en cours -->
-        <div v-if="store.hasDraft && store.draftProgress" class="draft-card glass rounded-2xl p-4">
-            <div class="flex items-center gap-3">
-                <div class="draft-icon font-jp">続</div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-xs font-bold mb-0.5" style="color:#7c3328; letter-spacing:0.08em; text-transform:uppercase;">Partie en cours</p>
-                    <p class="text-sm font-medium" style="color:#3a2e24;">
-                        Question {{ store.draftProgress.current }}/{{ store.draftProgress.total }}
+            <!-- Reprendre QCM -->
+            <div v-if="store.hasDraft && store.draftProgress" class="resume-banner resume-banner--qcm mb-3">
+                <div class="flex items-center gap-2 flex-1 min-w-0">
+                    <span class="font-jp font-black" style="color:#7c3328;">続</span>
+                    <span class="text-xs font-semibold" style="color:#3a2e24;">
+                        En cours — Q{{ store.draftProgress.current }}/{{ store.draftProgress.total }}
                         · {{ store.draftProgress.score }} correcte{{ store.draftProgress.score > 1 ? 's' : '' }}
-                    </p>
-                    <p class="text-xs mt-0.5" style="color:#6a5a48;">{{ draftModeLabel(store.draftProgress.mode) }}</p>
+                    </span>
                 </div>
-                <button class="draft-discard" @click="store.discardDraft()" title="Abandonner">✕</button>
+                <div class="flex gap-1">
+                    <button class="resume-action" @click="store.resumeQuiz()">Reprendre</button>
+                    <button class="discard-action" @click="store.discardDraft()" title="Abandonner">✕</button>
+                </div>
             </div>
-            <button class="resume-btn mt-3" @click="store.resumeQuiz()">
-                <span class="font-jp text-lg leading-none">続</span>
-                <span>Reprendre la partie</span>
+
+            <!-- Bouton démarrer -->
+            <button class="start-btn start-btn--qcm" @click="store.startQuiz()">
+                <span class="font-jp text-xl leading-none">始</span>
+                <span>{{ store.hasDraft ? 'Nouvelle partie' : 'Commencer le quiz' }}</span>
             </button>
         </div>
 
-        <!-- Démarrer -->
-        <button class="start-btn" @click="store.startQuiz()">
-            <span class="start-kanji">始</span>
-            <span>{{ store.hasDraft ? 'Nouvelle partie' : 'Commencer le quiz' }}</span>
-        </button>
+        <!-- ── Mode Saisie Libre ── -->
+        <div class="mode-card glass rounded-2xl p-5">
+
+            <!-- En-tête carte -->
+            <div class="flex items-center gap-3 mb-4">
+                <div class="mode-icon font-jp mode-icon--libre">書</div>
+                <div>
+                    <p class="text-sm font-bold" style="color:#261e16;">Saisie Libre</p>
+                    <p class="text-xs" style="color:#6a5a48;">Écrire le terme · FR → JP · 4 essais · 4→1 pts</p>
+                </div>
+            </div>
+
+            <!-- Nombre de questions -->
+            <p class="section-label mb-2">Questions</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+                <button
+                    v-for="cnt in COUNTS"
+                    :key="cnt"
+                    class="count-btn"
+                    :class="store.libreCount === cnt ? 'count-on--libre' : 'count-off'"
+                    @click="store.setLibreCount(cnt)"
+                >{{ cnt === allCount ? "Toutes" : cnt }}</button>
+            </div>
+
+            <!-- Reprendre Libre -->
+            <div v-if="store.hasLibreDraft && store.libreDraftProgress" class="resume-banner resume-banner--libre mb-3">
+                <div class="flex items-center gap-2 flex-1 min-w-0">
+                    <span class="font-jp font-black" style="color:#3a6090;">続</span>
+                    <span class="text-xs font-semibold" style="color:#3a2e24;">
+                        En cours — Q{{ store.libreDraftProgress.current }}/{{ store.libreDraftProgress.total }}
+                        · {{ store.libreDraftProgress.score }} pt{{ store.libreDraftProgress.score > 1 ? 's' : '' }}
+                    </span>
+                </div>
+                <div class="flex gap-1">
+                    <button class="resume-action resume-action--libre" @click="store.resumeLibreQuiz()">Reprendre</button>
+                    <button class="discard-action" @click="store.discardLibreDraft()" title="Abandonner">✕</button>
+                </div>
+            </div>
+
+            <!-- Bouton démarrer -->
+            <button class="start-btn start-btn--libre" @click="store.startLibreQuiz()">
+                <span class="font-jp text-xl leading-none">書</span>
+                <span>{{ store.hasLibreDraft ? 'Nouvelle saisie' : 'Commencer la saisie' }}</span>
+            </button>
+        </div>
+
     </div>
 </template>
 
@@ -108,207 +124,188 @@ import { useQuizStore } from "../../store";
 import { LEXIQUE } from "../../data";
 import type { Dir } from "../../store";
 
-const store = useQuizStore();
+const store    = useQuizStore();
 const allCount = LEXIQUE.length;
 
-const MODES = [
+const MODES  = [
     { id: "jp-fr" as const, icon: "JP → FR", label: "Japonais vers Français" },
     { id: "fr-jp" as const, icon: "FR → JP", label: "Français vers Japonais" },
-    { id: "both" as const, icon: "両", label: "Les deux directions" },
+    { id: "both" as const,  icon: "両",      label: "Les deux directions"    },
 ];
 const COUNTS = [10, 20, 30, 50, LEXIQUE.length];
-
-function draftModeLabel(mode: Dir): string {
-    return mode === "jp-fr" ? "JP → FR" : mode === "fr-jp" ? "FR → JP" : "Mode mixte";
-}
 </script>
 
 <style scoped>
-/* Kanji héros */
+/* Héros */
 .kanji-hero {
     color: #7c3328;
     text-shadow: 2px 3px 12px rgba(124, 51, 40, 0.2);
     line-height: 1;
 }
 
-/* Mode buttons */
+/* Cartes mode — même base */
+.mode-card {
+    /* hérite du style .glass global */
+}
+
+/* Icône mode */
+.mode-icon {
+    font-size: 2.2rem;
+    font-weight: 900;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.875rem;
+    flex-shrink: 0;
+}
+.mode-icon--qcm  { background: rgba(124, 51, 40, 0.08);  color: #7c3328; }
+.mode-icon--libre { background: rgba(58, 96, 144, 0.09); color: #3a6090; }
+
+/* Boutons direction */
 .mode-btn {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    border-radius: 0.875rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 0.75rem;
     border: 1px solid transparent;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.18s;
     width: 100%;
-}
-.mode-on {
-    background: rgba(124, 51, 40, 0.07);
-    border-color: rgba(124, 51, 40, 0.3);
-    color: #7c3328;
+    background: transparent;
 }
 .mode-off {
     background: rgba(172, 152, 120, 0.06);
-    border-color: rgba(172, 152, 120, 0.25);
+    border-color: rgba(172, 152, 120, 0.22);
     color: #3a2e24;
 }
 .mode-off:hover {
     background: rgba(172, 152, 120, 0.13);
-    border-color: rgba(124, 51, 40, 0.25);
+    border-color: rgba(124, 51, 40, 0.22);
     color: #261e16;
 }
-.check {
-    font-size: 0.875rem;
-    font-weight: 700;
+.mode-on--qcm {
+    background: rgba(124, 51, 40, 0.07);
+    border-color: rgba(124, 51, 40, 0.28);
     color: #7c3328;
 }
-
-/* Count buttons */
-.count-btn {
-    flex: 1;
-    min-width: 3.2rem;
-    padding: 0.6rem 0.4rem;
-    border-radius: 0.75rem;
-    border: 1px solid transparent;
-    font-size: 0.875rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.count-on {
-    background: rgba(124, 51, 40, 0.08);
-    border-color: rgba(124, 51, 40, 0.32);
-    color: #7c3328;
-}
-.count-off {
-    background: rgba(172, 152, 120, 0.06);
-    border-color: rgba(172, 152, 120, 0.25);
-    color: #4a3c30;
-}
-.count-off:hover {
-    background: rgba(172, 152, 120, 0.14);
-    color: #261e16;
-}
-
-/* Stats */
-.stat-n {
-    font-size: 1.6rem;
-    font-weight: 900;
-    color: #261e16;
-    line-height: 1.2;
-}
-.stat-l {
-    font-size: 0.65rem;
-    color: #5a4a3a;
-    margin-top: 0.15rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
-.sep {
-    width: 1px;
-    height: 2rem;
-    background: rgba(172, 152, 120, 0.22);
-}
-
-/* Bouton démarrer */
-.start-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    padding: 1.05rem;
-    border-radius: 1rem;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: #fff;
-    border: 1px solid rgba(100, 32, 24, 0.4);
-    background: linear-gradient(135deg, #8b3a2a 0%, #7c3328 100%);
-    box-shadow:
-        0 4px 20px rgba(124, 51, 40, 0.22),
-        0 1px 4px rgba(80, 40, 30, 0.12);
-    cursor: pointer;
-    transition: all 0.25s;
-}
-.start-btn:hover {
-    background: linear-gradient(135deg, #9c4232 0%, #8b3a2a 100%);
-    box-shadow:
-        0 6px 28px rgba(124, 51, 40, 0.32),
-        0 2px 6px rgba(80, 40, 30, 0.16);
-    transform: translateY(-2px);
-}
-.start-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 12px rgba(124, 51, 40, 0.15);
-}
-.start-kanji {
-    font-family: "Noto Serif JP", serif;
-    font-size: 1.2rem;
-    font-weight: 700;
-    opacity: 0.9;
-}
-/* Icône mode texte (JP→FR etc.) */
-.mode-btn .text-base {
-    font-family: "Shippori Mincho B1", serif;
-    font-size: 0.75rem;
+.mode-tag-text {
+    font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     min-width: 3.5rem;
     text-align: center;
 }
+.check { font-size: 0.85rem; font-weight: 700; }
+.check--qcm { color: #7c3328; }
 
-/* Carte reprise */
-.draft-card {
-    border-color: rgba(124, 51, 40, 0.25) !important;
-    background: rgba(255, 250, 245, 0.92) !important;
+/* Boutons count */
+.count-btn {
+    flex: 1;
+    min-width: 3rem;
+    padding: 0.55rem 0.4rem;
+    border-radius: 0.7rem;
+    border: 1px solid transparent;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
 }
-.draft-icon {
-    font-size: 2rem;
-    font-weight: 900;
+.count-off {
+    background: rgba(172, 152, 120, 0.06);
+    border-color: rgba(172, 152, 120, 0.22);
+    color: #4a3c30;
+}
+.count-off:hover { background: rgba(172, 152, 120, 0.14); color: #261e16; }
+.count-on--qcm  { background: rgba(124, 51, 40, 0.08); border-color: rgba(124, 51, 40, 0.30); color: #7c3328; }
+.count-on--libre { background: rgba(58, 96, 144, 0.09); border-color: rgba(58, 96, 144, 0.28); color: #3a6090; }
+
+/* Bannière reprise */
+.resume-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.75rem;
+    border: 1px solid transparent;
+}
+.resume-banner--qcm  {
+    background: rgba(124, 51, 40, 0.06);
+    border-color: rgba(124, 51, 40, 0.20);
+}
+.resume-banner--libre {
+    background: rgba(58, 96, 144, 0.06);
+    border-color: rgba(58, 96, 144, 0.20);
+}
+.resume-action {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(124, 51, 40, 0.30);
+    background: rgba(124, 51, 40, 0.08);
     color: #7c3328;
-    width: 2.5rem;
-    text-align: center;
-    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.18s;
+    white-space: nowrap;
 }
-.draft-discard {
-    font-size: 0.75rem;
+.resume-action:hover { background: rgba(124, 51, 40, 0.15); }
+.resume-action--libre {
+    border-color: rgba(58, 96, 144, 0.30);
+    background: rgba(58, 96, 144, 0.09);
+    color: #3a6090;
+}
+.resume-action--libre:hover { background: rgba(58, 96, 144, 0.18); }
+.discard-action {
+    font-size: 0.7rem;
     color: #9a8e82;
     background: transparent;
-    border: none;
+    border: 1px solid rgba(172, 152, 120, 0.25);
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.45rem;
     cursor: pointer;
-    padding: 0.25rem 0.4rem;
-    border-radius: 0.4rem;
     transition: all 0.18s;
-    flex-shrink: 0;
 }
-.draft-discard:hover {
-    color: #822020;
-    background: rgba(130, 32, 32, 0.07);
-}
+.discard-action:hover { color: #822020; background: rgba(130, 32, 32, 0.07); border-color: rgba(130,32,32,0.25); }
 
-/* Bouton reprendre */
-.resume-btn {
+/* Boutons démarrer */
+.start-btn {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.6rem;
-    padding: 0.75rem;
+    gap: 0.7rem;
+    padding: 0.95rem;
     border-radius: 0.875rem;
     font-size: 0.95rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #fff8f0;
-    background: linear-gradient(135deg, #6a5040 0%, #7c3328 100%);
-    border: 1px solid rgba(100, 40, 30, 0.35);
+    letter-spacing: 0.05em;
+    color: #fff;
+    border: 1px solid transparent;
     cursor: pointer;
     transition: all 0.22s;
 }
-.resume-btn:hover {
-    background: linear-gradient(135deg, #7a5a48 0%, #8b3a2a 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(124, 51, 40, 0.25);
+.start-btn--qcm {
+    background: linear-gradient(135deg, #8b3a2a 0%, #7c3328 100%);
+    border-color: rgba(100, 32, 24, 0.4);
+    box-shadow: 0 3px 16px rgba(124, 51, 40, 0.20);
 }
+.start-btn--qcm:hover {
+    background: linear-gradient(135deg, #9c4232 0%, #8b3a2a 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 22px rgba(124, 51, 40, 0.28);
+}
+.start-btn--libre {
+    background: linear-gradient(135deg, #4a72a8 0%, #3a6090 100%);
+    border-color: rgba(40, 70, 110, 0.35);
+    box-shadow: 0 3px 16px rgba(58, 96, 144, 0.18);
+}
+.start-btn--libre:hover {
+    background: linear-gradient(135deg, #5580b8 0%, #4a72a8 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 22px rgba(58, 96, 144, 0.28);
+}
+.start-btn:active { transform: translateY(0); }
 </style>

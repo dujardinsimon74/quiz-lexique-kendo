@@ -16,6 +16,8 @@
                     <ResultsScreen       v-else-if="store.screen === 'results'"        key="results"        />
                     <HistoryScreen       v-else-if="store.screen === 'history'"        key="history"        />
                     <HistoryDetailScreen v-else-if="store.screen === 'history-detail'" key="history-detail" />
+                    <QuizLibreScreen     v-else-if="store.screen === 'quiz-libre'"     key="quiz-libre"     />
+                    <ResultsLibreScreen  v-else-if="store.screen === 'results-libre'"  key="results-libre"  />
                 </Transition>
             </main>
 
@@ -37,6 +39,8 @@ import QuizScreen from "./components/screens/QuizScreen.vue";
 import ResultsScreen from "./components/screens/ResultsScreen.vue";
 import HistoryScreen from "./components/screens/HistoryScreen.vue";
 import HistoryDetailScreen from "./components/screens/HistoryDetailScreen.vue";
+import QuizLibreScreen from "./components/screens/QuizLibreScreen.vue";
+import ResultsLibreScreen from "./components/screens/ResultsLibreScreen.vue";
 
 const store = useQuizStore();
 </script>

@@ -42,9 +42,16 @@
           <!-- Infos -->
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="mode-tag">{{ modeLabel(session.mode) }}</span>
+              <span class="mode-tag" :class="session.type === 'libre' ? 'mode-tag--libre' : ''">
+                {{ session.type === 'libre' ? 'Saisie libre' : modeLabel(session.mode!) }}
+              </span>
               <span class="text-xs font-medium" style="color:#4a3c30;">
-                {{ session.score }}/{{ session.total }} correctes
+                <template v-if="session.type === 'libre'">
+                  {{ session.score }} / {{ session.total }} pts
+                </template>
+                <template v-else>
+                  {{ session.score }}/{{ session.total }} correctes
+                </template>
               </span>
             </div>
             <div class="text-xs mt-1" style="color:#8a7a68;">{{ formatDate(session.date) }}</div>
@@ -129,6 +136,11 @@ function confirmClear() {
   background: rgba(124, 51, 40, 0.08);
   border: 1px solid rgba(124, 51, 40, 0.20);
   color: #7c3328;
+}
+.mode-tag--libre {
+  background: rgba(58, 96, 144, 0.09);
+  border-color: rgba(58, 96, 144, 0.22);
+  color: #3a6090;
 }
 
 /* Bouton effacer */
