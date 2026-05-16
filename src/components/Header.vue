@@ -18,7 +18,7 @@
                     class="text-xs tracking-wider mt-0.5"
                     style="color: #6a5a48; letter-spacing: 0.1em"
                 >
-                    Entrainement au lexique du Kendo
+                    Entrainement au vocabulaire du Kendo
                 </p>
             </div>
 

@@ -11,13 +11,31 @@
 
             <main class="flex-1 max-w-xl w-full mx-auto px-4 py-6">
                 <Transition name="screen" mode="out-in">
-                    <HomeScreen          v-if="store.screen === 'home'"           key="home"           />
-                    <QuizScreen          v-else-if="store.screen === 'quiz'"           key="quiz"           />
-                    <ResultsScreen       v-else-if="store.screen === 'results'"        key="results"        />
-                    <HistoryScreen       v-else-if="store.screen === 'history'"        key="history"        />
-                    <HistoryDetailScreen v-else-if="store.screen === 'history-detail'" key="history-detail" />
-                    <QuizLibreScreen     v-else-if="store.screen === 'quiz-libre'"     key="quiz-libre"     />
-                    <ResultsLibreScreen  v-else-if="store.screen === 'results-libre'"  key="results-libre"  />
+                    <HomeScreen v-if="store.screen === 'home'" key="home" />
+                    <QuizScreen
+                        v-else-if="store.screen === 'quiz'"
+                        key="quiz"
+                    />
+                    <ResultsScreen
+                        v-else-if="store.screen === 'results'"
+                        key="results"
+                    />
+                    <HistoryScreen
+                        v-else-if="store.screen === 'history'"
+                        key="history"
+                    />
+                    <HistoryDetailScreen
+                        v-else-if="store.screen === 'history-detail'"
+                        key="history-detail"
+                    />
+                    <QuizLibreScreen
+                        v-else-if="store.screen === 'quiz-libre'"
+                        key="quiz-libre"
+                    />
+                    <ResultsLibreScreen
+                        v-else-if="store.screen === 'results-libre'"
+                        key="results-libre"
+                    />
                 </Transition>
             </main>
 
@@ -25,7 +43,7 @@
                 class="text-center py-4 text-xs tracking-widest"
                 style="color: #7a6a58"
             >
-                Lexique de 剣道 - Révision CAF
+                Lexique de Kendo
             </footer>
         </div>
     </div>
