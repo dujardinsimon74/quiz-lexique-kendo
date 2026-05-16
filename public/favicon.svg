@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&amp;display=swap');
+    </style>
+  </defs>
+  <!-- Fond transparent, légèrement chaud pour rappeler le papier -->
+  <rect width="64" height="64" rx="12" fill="#f5f0e8"/>
+  <!-- Kanji 剣 -->
+  <text
+    x="32"
+    y="48"
+    font-family="'Noto Serif JP', serif"
+    font-size="42"
+    font-weight="700"
+    fill="#7c3328"
+    text-anchor="middle"
+  >剣</text>
+</svg>
