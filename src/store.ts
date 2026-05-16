@@ -89,7 +89,7 @@ export const useQuizStore = defineStore("quiz", {
             dir === "jp-fr"
               ? "Que signifie ce terme japonais ?"
               : "Quel est le terme japonais correspondant ?",
-          badge: dir === "jp-fr" ? "🇯🇵 → 🇫🇷" : "🇫🇷 → 🇯🇵",
+          badge: dir === "jp-fr" ? "JP → FR" : "FR → JP",
           options: pool.map((o) => (dir === "jp-fr" ? o.ans : o.jp)),
           correct: ci,
         };

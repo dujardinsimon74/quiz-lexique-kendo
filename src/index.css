@@ -2,37 +2,109 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Variables – Palette jardin zen clair ─────────── */
+:root {
+  /* Sable / parchemin */
+  --sand:          #f0ebe0;
+  --sand-light:    #f8f4ee;
+
+  /* Carte (papier de riz) */
+  --card-bg:       rgba(255, 252, 248, 0.90);
+  --card-border:   rgba(172, 152, 120, 0.20);
+  --card-shadow:   rgba(80, 60, 38, 0.09);
+
+  /* Encre – typographie */
+  --ink:           #261e16;
+  --ink-mid:       #4a3c30;
+  --ink-faint:     #6a5a48;
+
+  /* Vermillon (torii, laque kendo) – très sobre */
+  --red:           #7c3328;
+  --red-bg:        rgba(124, 51, 40, 0.08);
+  --red-border:    rgba(124, 51, 40, 0.28);
+
+  /* Mousse (succès) */
+  --green:         #2e5e38;
+  --green-bg:      rgba(46, 94, 56, 0.10);
+  --green-border:  rgba(46, 94, 56, 0.35);
+
+  /* Erreur */
+  --err:           #822020;
+  --err-bg:        rgba(130, 32, 32, 0.08);
+  --err-border:    rgba(130, 32, 32, 0.30);
+}
+
+/* ── Base ─────────────────────────────────────────── */
+body {
+  color: var(--ink);
+  font-family: 'Shippori Mincho B1', 'Noto Serif JP', serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Police japonaise ─────────────────────────────── */
 .font-jp {
-    font-family: "Noto Sans JP", sans-serif;
+  font-family: 'Noto Serif JP', serif;
 }
 
+/* ── Carte papier de riz ──────────────────────────── */
+.glass {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 2px 24px var(--card-shadow), 0 1px 4px rgba(80,60,38,0.05);
+}
+
+/* ── Label de section ─────────────────────────────── */
+.section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #5a4a3a;
+}
+
+/* ── Séparateur vermillon ─────────────────────────── */
+.divider-red {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(124,51,40,0.35), transparent);
+}
+
+/* ── Animations ───────────────────────────────────── */
 .animate-fade-in {
-    animation: fadeIn 0.25s ease-out;
+  animation: fadeUp 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: none;
-    }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
 }
 
 .animate-pop {
-    animation: pop 0.18s cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation: pop 0.24s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.94); }
+  60%  {             transform: scale(1.03); }
+  to   { opacity: 1; transform: scale(1);    }
 }
 
-@keyframes pop {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.04);
-    }
-    100% {
-        transform: scale(1);
-    }
+.animate-shake {
+  animation: shake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0);   }
+  18%     { transform: translateX(-7px);}
+  36%     { transform: translateX(7px); }
+  54%     { transform: translateX(-4px);}
+  72%     { transform: translateX(4px); }
+  90%     { transform: translateX(-2px);}
+}
+
+.animate-correct {
+  animation: correctPulse 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+@keyframes correctPulse {
+  0%   { transform: scale(1);    }
+  40%  { transform: scale(1.02); box-shadow: 0 0 0 6px rgba(46,94,56,0.12); }
+  100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(46,94,56,0);      }
 }
