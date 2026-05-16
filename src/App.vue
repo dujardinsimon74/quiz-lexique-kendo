@@ -11,15 +11,11 @@
 
             <main class="flex-1 max-w-xl w-full mx-auto px-4 py-6">
                 <Transition name="screen" mode="out-in">
-                    <HomeScreen v-if="store.screen === 'home'" key="home" />
-                    <QuizScreen
-                        v-else-if="store.screen === 'quiz'"
-                        key="quiz"
-                    />
-                    <ResultsScreen
-                        v-else-if="store.screen === 'results'"
-                        key="results"
-                    />
+                    <HomeScreen          v-if="store.screen === 'home'"           key="home"           />
+                    <QuizScreen          v-else-if="store.screen === 'quiz'"           key="quiz"           />
+                    <ResultsScreen       v-else-if="store.screen === 'results'"        key="results"        />
+                    <HistoryScreen       v-else-if="store.screen === 'history'"        key="history"        />
+                    <HistoryDetailScreen v-else-if="store.screen === 'history-detail'" key="history-detail" />
                 </Transition>
             </main>
 
@@ -39,6 +35,8 @@ import Header from "./components/Header.vue";
 import HomeScreen from "./components/screens/HomeScreen.vue";
 import QuizScreen from "./components/screens/QuizScreen.vue";
 import ResultsScreen from "./components/screens/ResultsScreen.vue";
+import HistoryScreen from "./components/screens/HistoryScreen.vue";
+import HistoryDetailScreen from "./components/screens/HistoryDetailScreen.vue";
 
 const store = useQuizStore();
 </script>

@@ -75,10 +75,30 @@
             </div>
         </div>
 
+        <!-- Reprendre la partie en cours -->
+        <div v-if="store.hasDraft && store.draftProgress" class="draft-card glass rounded-2xl p-4">
+            <div class="flex items-center gap-3">
+                <div class="draft-icon font-jp">続</div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-bold mb-0.5" style="color:#7c3328; letter-spacing:0.08em; text-transform:uppercase;">Partie en cours</p>
+                    <p class="text-sm font-medium" style="color:#3a2e24;">
+                        Question {{ store.draftProgress.current }}/{{ store.draftProgress.total }}
+                        · {{ store.draftProgress.score }} correcte{{ store.draftProgress.score > 1 ? 's' : '' }}
+                    </p>
+                    <p class="text-xs mt-0.5" style="color:#6a5a48;">{{ draftModeLabel(store.draftProgress.mode) }}</p>
+                </div>
+                <button class="draft-discard" @click="store.discardDraft()" title="Abandonner">✕</button>
+            </div>
+            <button class="resume-btn mt-3" @click="store.resumeQuiz()">
+                <span class="font-jp text-lg leading-none">続</span>
+                <span>Reprendre la partie</span>
+            </button>
+        </div>
+
         <!-- Démarrer -->
         <button class="start-btn" @click="store.startQuiz()">
             <span class="start-kanji">始</span>
-            <span>Commencer le quiz</span>
+            <span>{{ store.hasDraft ? 'Nouvelle partie' : 'Commencer le quiz' }}</span>
         </button>
     </div>
 </template>
@@ -86,6 +106,7 @@
 <script setup lang="ts">
 import { useQuizStore } from "../../store";
 import { LEXIQUE } from "../../data";
+import type { Dir } from "../../store";
 
 const store = useQuizStore();
 const allCount = LEXIQUE.length;
@@ -96,6 +117,10 @@ const MODES = [
     { id: "both" as const, icon: "両", label: "Les deux directions" },
 ];
 const COUNTS = [10, 20, 30, 50, LEXIQUE.length];
+
+function draftModeLabel(mode: Dir): string {
+    return mode === "jp-fr" ? "JP → FR" : mode === "fr-jp" ? "FR → JP" : "Mode mixte";
+}
 </script>
 
 <style scoped>
@@ -232,5 +257,58 @@ const COUNTS = [10, 20, 30, 50, LEXIQUE.length];
     letter-spacing: 0.04em;
     min-width: 3.5rem;
     text-align: center;
+}
+
+/* Carte reprise */
+.draft-card {
+    border-color: rgba(124, 51, 40, 0.25) !important;
+    background: rgba(255, 250, 245, 0.92) !important;
+}
+.draft-icon {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #7c3328;
+    width: 2.5rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+.draft-discard {
+    font-size: 0.75rem;
+    color: #9a8e82;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0.4rem;
+    border-radius: 0.4rem;
+    transition: all 0.18s;
+    flex-shrink: 0;
+}
+.draft-discard:hover {
+    color: #822020;
+    background: rgba(130, 32, 32, 0.07);
+}
+
+/* Bouton reprendre */
+.resume-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.75rem;
+    border-radius: 0.875rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #fff8f0;
+    background: linear-gradient(135deg, #6a5040 0%, #7c3328 100%);
+    border: 1px solid rgba(100, 40, 30, 0.35);
+    cursor: pointer;
+    transition: all 0.22s;
+}
+.resume-btn:hover {
+    background: linear-gradient(135deg, #7a5a48 0%, #8b3a2a 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(124, 51, 40, 0.25);
 }
 </style>
