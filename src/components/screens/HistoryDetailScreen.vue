@@ -59,7 +59,12 @@
     <div v-if="session.type !== 'libre'" class="glass rounded-2xl p-4 flex items-center gap-4">
       <div class="font-jp text-2xl font-black" style="color:#7c3328;">{{ modeKanji(session.mode!) }}</div>
       <div class="flex-1">
-        <div class="text-xs font-bold mb-0.5" style="color:#4a3c30;">{{ modeLabel(session.mode!) }}</div>
+        <div class="flex items-center gap-2 mb-0.5">
+          <div class="text-xs font-bold" style="color:#4a3c30;">{{ modeLabel(session.mode!) }}</div>
+          <span class="level-badge" :class="session.kyushaMode ? 'level-badge--kyusha' : 'level-badge--yudan'">
+            {{ session.kyushaMode ? '級 Kyûsha' : '段 Yudansha' }}
+          </span>
+        </div>
         <div class="flex gap-3 text-xs" style="color:#6a5a48;">
           <span v-if="jpFrCount > 0">JP → FR : {{ jpFrOk }}/{{ jpFrCount }}</span>
           <span v-if="frJpCount > 0">FR → JP : {{ frJpOk }}/{{ frJpCount }}</span>
@@ -71,7 +76,12 @@
     <div v-else class="glass rounded-2xl p-4 flex items-center gap-4">
       <div class="font-jp text-2xl font-black" style="color:#3a6090;">書</div>
       <div class="flex-1">
-        <div class="text-xs font-bold mb-0.5" style="color:#4a3c30;">Saisie libre · FR → JP</div>
+        <div class="flex items-center gap-2 mb-0.5">
+          <div class="text-xs font-bold" style="color:#4a3c30;">Saisie libre · FR → JP</div>
+          <span class="level-badge" :class="session.kyushaMode ? 'level-badge--kyusha' : 'level-badge--yudan'">
+            {{ session.kyushaMode ? '級 Kyûsha' : '段 Yudansha' }}
+          </span>
+        </div>
         <div class="text-xs" style="color:#6a5a48;">
           {{ session.score }} / {{ session.total }} points · {{ libreQuestionCount }} questions
         </div>
@@ -250,6 +260,27 @@ function ptsBadgeClass(pts: number): string {
   border-radius: 99px;
   background: rgba(124, 51, 40, 0.07);
   border: 1px solid rgba(124, 51, 40, 0.18);
+  color: #7c3328;
+}
+
+/* Badge Kyûsha / Yudansha */
+.level-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.1rem 0.45rem;
+  border-radius: 99px;
+  border: 1px solid transparent;
+  flex-shrink: 0;
+}
+.level-badge--kyusha {
+  background: rgba(45, 110, 75, 0.09);
+  border-color: rgba(45, 110, 75, 0.25);
+  color: #2d6e4b;
+}
+.level-badge--yudan {
+  background: rgba(124, 51, 40, 0.07);
+  border-color: rgba(124, 51, 40, 0.20);
   color: #7c3328;
 }
 

@@ -45,6 +45,9 @@
               <span class="mode-tag" :class="session.type === 'libre' ? 'mode-tag--libre' : ''">
                 {{ session.type === 'libre' ? 'Saisie libre' : modeLabel(session.mode!) }}
               </span>
+              <span class="level-tag" :class="session.kyushaMode ? 'level-tag--kyusha' : 'level-tag--yudan'">
+                {{ session.kyushaMode ? '級 Kyûsha' : '段 Yudan' }}
+              </span>
               <span class="text-xs font-medium" style="color:#4a3c30;">
                 <template v-if="session.type === 'libre'">
                   {{ session.score }} / {{ session.total }} pts
@@ -141,6 +144,26 @@ function confirmClear() {
   background: rgba(58, 96, 144, 0.09);
   border-color: rgba(58, 96, 144, 0.22);
   color: #3a6090;
+}
+
+/* Badge niveau Kyûsha / Yudansha */
+.level-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 99px;
+  border: 1px solid transparent;
+}
+.level-tag--kyusha {
+  background: rgba(45, 110, 75, 0.09);
+  border-color: rgba(45, 110, 75, 0.25);
+  color: #2d6e4b;
+}
+.level-tag--yudan {
+  background: rgba(124, 51, 40, 0.07);
+  border-color: rgba(124, 51, 40, 0.20);
+  color: #7c3328;
 }
 
 /* Bouton effacer */

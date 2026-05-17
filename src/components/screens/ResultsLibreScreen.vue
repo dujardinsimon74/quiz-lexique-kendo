@@ -170,9 +170,9 @@ function ptsBadgeClass(pts: number): string {
   letter-spacing: 0.05em;
   padding: 0.1rem 0.4rem;
   border-radius: 99px;
-  background: rgba(124, 51, 40, 0.07);
-  border: 1px solid rgba(124, 51, 40, 0.18);
-  color: #7c3328;
+  background: rgba(var(--clr-p-rgb), 0.07);
+  border: 1px solid rgba(var(--clr-p-rgb), 0.18);
+  color: var(--clr-p);
 }
 
 /* Boutons action */
@@ -190,14 +190,15 @@ function ptsBadgeClass(pts: number): string {
   border: 1px solid transparent;
 }
 .action-btn--primary {
-  background: #7c3328;
+  background: var(--clr-p);
   color: #fff8f0;
-  border-color: #6a2a20;
+  border-color: rgba(var(--clr-p-rgb), 0.8);
+  transition: background 0.35s, box-shadow 0.35s, transform 0.2s;
 }
 .action-btn--primary:hover {
-  background: #922e22;
+  background: var(--clr-p-lighter);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(124, 51, 40, 0.30);
+  box-shadow: 0 4px 16px rgba(var(--clr-p-rgb), 0.30);
 }
 .action-btn--secondary {
   background: rgba(255, 252, 248, 0.85);
@@ -206,7 +207,7 @@ function ptsBadgeClass(pts: number): string {
 }
 .action-btn--secondary:hover {
   background: rgba(255, 252, 248, 0.98);
-  color: #7c3328;
-  border-color: rgba(124, 51, 40, 0.28);
+  color: var(--clr-p);
+  border-color: rgba(var(--clr-p-rgb), 0.28);
 }
 </style>

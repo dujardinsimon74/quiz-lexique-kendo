@@ -23,6 +23,12 @@
   --red-bg:        rgba(124, 51, 40, 0.08);
   --red-border:    rgba(124, 51, 40, 0.28);
 
+  /* ── Couleur primaire du thème (Yudansha = rouge, Kyûsha = vert) ── */
+  --clr-p:         #7c3328;
+  --clr-p-light:   #8b3a2a;
+  --clr-p-lighter: #9c4232;
+  --clr-p-rgb:     124, 51, 40;
+
   /* Mousse (succès) */
   --green:         #2e5e38;
   --green-bg:      rgba(46, 94, 56, 0.10);
@@ -32,6 +38,14 @@
   --err:           #822020;
   --err-bg:        rgba(130, 32, 32, 0.08);
   --err-border:    rgba(130, 32, 32, 0.30);
+}
+
+/* Thème Kyûsha (vert mousse) */
+html.kyusha {
+  --clr-p:         #2d6e4b;
+  --clr-p-light:   #3a8060;
+  --clr-p-lighter: #4a9070;
+  --clr-p-rgb:     45, 110, 75;
 }
 
 /* ── Base ─────────────────────────────────────────── */
@@ -64,10 +78,10 @@ body {
   color: #5a4a3a;
 }
 
-/* ── Séparateur vermillon ─────────────────────────── */
+/* ── Séparateur (couleur primaire du thème) ───────── */
 .divider-red {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(124,51,40,0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(var(--clr-p-rgb), 0.35), transparent);
 }
 
 /* ── Animations ───────────────────────────────────── */

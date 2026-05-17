@@ -63,7 +63,7 @@
           <div class="min-w-0">
             <div class="font-jp font-semibold text-sm" style="color:#261e16;">{{ r.jp }}</div>
             <div class="text-xs mt-0.5" style="color:#5a4a3a;">{{ r.ans }}</div>
-            <div class="text-xs mt-0.5" style="color:#7c3328;">Votre réponse : {{ r.given }}</div>
+            <div class="text-xs mt-0.5" style="color: var(--clr-p);">Votre réponse : {{ r.given }}</div>
           </div>
         </div>
       </div>
@@ -122,15 +122,16 @@ const missed    = computed(() => store.sessionResults.filter((r:Result) => !r.ok
 .act-primary {
   flex:1; padding:0.875rem; border-radius:0.875rem;
   font-weight:700; font-size:0.875rem; letter-spacing:0.03em;
-  color:#fff; cursor:pointer; transition:all 0.2s;
-  background: linear-gradient(135deg, #8b3a2a 0%, #7c3328 100%);
-  border: 1px solid rgba(100,32,24,0.35);
-  box-shadow: 0 3px 16px rgba(124,51,40,0.20);
+  color:#fff; cursor:pointer;
+  transition: background 0.35s, box-shadow 0.35s, transform 0.2s;
+  background: linear-gradient(135deg, var(--clr-p-light) 0%, var(--clr-p) 100%);
+  border: 1px solid rgba(var(--clr-p-rgb), 0.35);
+  box-shadow: 0 3px 16px rgba(var(--clr-p-rgb), 0.20);
 }
 .act-primary:hover {
-  background: linear-gradient(135deg, #9c4232 0%, #8b3a2a 100%);
+  background: linear-gradient(135deg, var(--clr-p-lighter) 0%, var(--clr-p-light) 100%);
   transform:translateY(-1px);
-  box-shadow:0 5px 22px rgba(124,51,40,0.28);
+  box-shadow:0 5px 22px rgba(var(--clr-p-rgb), 0.28);
 }
 .act-ghost {
   flex:1; padding:0.875rem; border-radius:0.875rem;

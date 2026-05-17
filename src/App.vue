@@ -50,6 +50,7 @@
 </template>
 
 <script setup lang="ts">
+import { watchEffect } from "vue";
 import { useQuizStore } from "./store";
 import Header from "./components/Header.vue";
 import HomeScreen from "./components/screens/HomeScreen.vue";
@@ -61,6 +62,11 @@ import QuizLibreScreen from "./components/screens/QuizLibreScreen.vue";
 import ResultsLibreScreen from "./components/screens/ResultsLibreScreen.vue";
 
 const store = useQuizStore();
+
+// Bascule le thème global (classe sur <html>) selon le mode actif
+watchEffect(() => {
+  document.documentElement.classList.toggle("kyusha", store.kyushaMode);
+});
 </script>
 
 <style>

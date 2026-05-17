@@ -13,6 +13,36 @@
             </p>
         </div>
 
+        <!-- ── Sélecteur Kyûsha / Yudansha ── -->
+        <div class="level-selector glass rounded-2xl p-2">
+            <div class="flex gap-1.5">
+                <button
+                    class="level-btn"
+                    :class="store.kyushaMode ? 'level-btn--kyusha' : 'level-btn--off'"
+                    @click="store.setKyushaMode(true)"
+                >
+                    <span class="font-jp level-btn-kanji">級</span>
+                    <span class="flex-1 text-left">
+                        <span class="level-btn-title">Kyûsha</span>
+                        <span class="level-btn-sub">{{ KYUSHA.length }} termes · Kyû</span>
+                    </span>
+                    <span v-if="store.kyushaMode" class="level-check level-check--kyusha">○</span>
+                </button>
+                <button
+                    class="level-btn"
+                    :class="!store.kyushaMode ? 'level-btn--yudan' : 'level-btn--off'"
+                    @click="store.setKyushaMode(false)"
+                >
+                    <span class="font-jp level-btn-kanji">段</span>
+                    <span class="flex-1 text-left">
+                        <span class="level-btn-title">Yudansha</span>
+                        <span class="level-btn-sub">{{ LEXIQUE.length }} termes · Dan</span>
+                    </span>
+                    <span v-if="!store.kyushaMode" class="level-check level-check--yudan">○</span>
+                </button>
+            </div>
+        </div>
+
         <!-- ── Mode Quiz QCM ── -->
         <div class="mode-card glass rounded-2xl p-5">
             <!-- En-tête carte -->
@@ -68,7 +98,7 @@
                 class="resume-banner resume-banner--qcm mb-3"
             >
                 <div class="flex items-center gap-2 flex-1 min-w-0">
-                    <span class="font-jp font-black" style="color: #7c3328"
+                    <span class="font-jp font-black" style="color: var(--clr-p)"
                         >続</span
                     >
                     <span class="text-xs font-semibold" style="color: #3a2e24">
@@ -188,27 +218,102 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { useQuizStore } from "../../store";
-import { LEXIQUE } from "../../data";
+import { LEXIQUE, KYUSHA } from "../../data";
 import type { Dir } from "../../store";
 
 const store = useQuizStore();
-const allCount = LEXIQUE.length;
+const allCount = computed(() => store.allCount);
 
 const MODES = [
     { id: "jp-fr" as const, icon: "JP → FR", label: "Japonais vers Français" },
     { id: "fr-jp" as const, icon: "FR → JP", label: "Français vers Japonais" },
     { id: "both" as const, icon: "両", label: "Les deux directions" },
 ];
-const COUNTS = [10, 20, 30, 50, LEXIQUE.length];
+const COUNTS = computed(() =>
+    store.kyushaMode
+        ? [10, 20, KYUSHA.length]
+        : [10, 20, 30, 50, LEXIQUE.length]
+);
 </script>
 
 <style scoped>
+/* ── Sélecteur Kyûsha / Yudansha ── */
+.level-selector {
+    border: 1px solid rgba(172, 152, 120, 0.22);
+}
+
+.level-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 0.8rem;
+    border-radius: 0.75rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.18s;
+    background: transparent;
+    text-align: left;
+}
+.level-btn--off {
+    background: rgba(172, 152, 120, 0.05);
+    border-color: transparent;
+    color: #6a5a48;
+}
+.level-btn--off:hover {
+    background: rgba(172, 152, 120, 0.12);
+}
+.level-btn--kyusha {
+    background: rgba(45, 110, 75, 0.08);
+    border-color: rgba(45, 110, 75, 0.3);
+    color: #2d6e4b;
+}
+.level-btn--yudan {
+    background: rgba(124, 51, 40, 0.07);
+    border-color: rgba(124, 51, 40, 0.28);
+    color: #7c3328;
+}
+
+.level-btn-kanji {
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1;
+    width: 1.8rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+.level-btn span.flex-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+}
+.level-btn-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    display: block;
+}
+.level-btn-sub {
+    font-size: 0.68rem;
+    opacity: 0.75;
+    display: block;
+}
+.level-check {
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.level-check--kyusha { color: #2d6e4b; }
+.level-check--yudan  { color: #7c3328; }
+
 /* Héros */
 .kanji-hero {
-    color: #7c3328;
-    text-shadow: 2px 3px 12px rgba(124, 51, 40, 0.2);
+    color: var(--clr-p);
+    text-shadow: 2px 3px 12px rgba(var(--clr-p-rgb), 0.2);
     line-height: 1;
+    transition: color 0.35s, text-shadow 0.35s;
 }
 
 /* Cartes mode — même base */
@@ -229,8 +334,9 @@ const COUNTS = [10, 20, 30, 50, LEXIQUE.length];
     flex-shrink: 0;
 }
 .mode-icon--qcm {
-    background: rgba(124, 51, 40, 0.08);
-    color: #7c3328;
+    background: rgba(var(--clr-p-rgb), 0.08);
+    color: var(--clr-p);
+    transition: background 0.35s, color 0.35s;
 }
 .mode-icon--libre {
     background: rgba(58, 96, 144, 0.09);
@@ -257,13 +363,13 @@ const COUNTS = [10, 20, 30, 50, LEXIQUE.length];
 }
 .mode-off:hover {
     background: rgba(172, 152, 120, 0.13);
-    border-color: rgba(124, 51, 40, 0.22);
+    border-color: rgba(var(--clr-p-rgb), 0.22);
     color: #261e16;
 }
 .mode-on--qcm {
-    background: rgba(124, 51, 40, 0.07);
-    border-color: rgba(124, 51, 40, 0.28);
-    color: #7c3328;
+    background: rgba(var(--clr-p-rgb), 0.07);
+    border-color: rgba(var(--clr-p-rgb), 0.28);
+    color: var(--clr-p);
 }
 .mode-tag-text {
     font-size: 0.72rem;
@@ -277,7 +383,7 @@ const COUNTS = [10, 20, 30, 50, LEXIQUE.length];
     font-weight: 700;
 }
 .check--qcm {
-    color: #7c3328;
+    color: var(--clr-p);
 }
 
 /* Boutons count */
@@ -302,9 +408,9 @@ const COUNTS = [10, 20, 30, 50, LEXIQUE.length];
     color: #261e16;
 }
 .count-on--qcm {
-    background: rgba(124, 51, 40, 0.08);
-    border-color: rgba(124, 51, 40, 0.3);
-    color: #7c3328;
+    background: rgba(var(--clr-p-rgb), 0.08);
+    border-color: rgba(var(--clr-p-rgb), 0.3);
+    color: var(--clr-p);
 }
 .count-on--libre {
     background: rgba(58, 96, 144, 0.09);
@@ -322,8 +428,8 @@ const COUNTS = [10, 20, 30, 50, LEXIQUE.length];
     border: 1px solid transparent;
 }
 .resume-banner--qcm {
-    background: rgba(124, 51, 40, 0.06);
-    border-color: rgba(124, 51, 40, 0.2);
+    background: rgba(var(--clr-p-rgb), 0.06);
+    border-color: rgba(var(--clr-p-rgb), 0.2);
 }
 .resume-banner--libre {
     background: rgba(58, 96, 144, 0.06);
@@ -334,15 +440,15 @@ const COUNTS = [10, 20, 30, 50, LEXIQUE.length];
     font-weight: 700;
     padding: 0.25rem 0.6rem;
     border-radius: 0.5rem;
-    border: 1px solid rgba(124, 51, 40, 0.3);
-    background: rgba(124, 51, 40, 0.08);
-    color: #7c3328;
+    border: 1px solid rgba(var(--clr-p-rgb), 0.3);
+    background: rgba(var(--clr-p-rgb), 0.08);
+    color: var(--clr-p);
     cursor: pointer;
     transition: all 0.18s;
     white-space: nowrap;
 }
 .resume-action:hover {
-    background: rgba(124, 51, 40, 0.15);
+    background: rgba(var(--clr-p-rgb), 0.15);
 }
 .resume-action--libre {
     border-color: rgba(58, 96, 144, 0.3);
@@ -386,14 +492,15 @@ const COUNTS = [10, 20, 30, 50, LEXIQUE.length];
     transition: all 0.22s;
 }
 .start-btn--qcm {
-    background: linear-gradient(135deg, #8b3a2a 0%, #7c3328 100%);
-    border-color: rgba(100, 32, 24, 0.4);
-    box-shadow: 0 3px 16px rgba(124, 51, 40, 0.2);
+    background: linear-gradient(135deg, var(--clr-p-light) 0%, var(--clr-p) 100%);
+    border-color: rgba(var(--clr-p-rgb), 0.4);
+    box-shadow: 0 3px 16px rgba(var(--clr-p-rgb), 0.2);
+    transition: background 0.35s, box-shadow 0.35s, transform 0.22s;
 }
 .start-btn--qcm:hover {
-    background: linear-gradient(135deg, #9c4232 0%, #8b3a2a 100%);
+    background: linear-gradient(135deg, var(--clr-p-lighter) 0%, var(--clr-p-light) 100%);
     transform: translateY(-1px);
-    box-shadow: 0 5px 22px rgba(124, 51, 40, 0.28);
+    box-shadow: 0 5px 22px rgba(var(--clr-p-rgb), 0.28);
 }
 .start-btn--libre {
     background: linear-gradient(135deg, #4a72a8 0%, #3a6090 100%);

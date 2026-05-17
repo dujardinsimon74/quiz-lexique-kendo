@@ -34,7 +34,7 @@
                         class="text-lg font-black tabular-nums"
                         style="color: #261e16; line-height: 1.1"
                     >
-                        <span style="color: #7c3328">{{ store.score }}</span>
+                        <span style="color: var(--clr-p)">{{ store.score }}</span>
                         <span style="color: #c8b89a">/</span>
                         <span>{{ store.questions.length }}</span>
                     </div>
@@ -87,9 +87,9 @@ const store = useQuizStore();
 }
 
 .kanji-ink {
-    color: #7c3328;
-    text-shadow: 1px 2px 8px rgba(124, 51, 40, 0.18);
-    transition: opacity 0.2s;
+    color: var(--clr-p);
+    text-shadow: 1px 2px 8px rgba(var(--clr-p-rgb), 0.18);
+    transition: color 0.3s, text-shadow 0.3s, opacity 0.2s;
 }
 .kanji-ink:hover {
     opacity: 0.75;
@@ -113,14 +113,14 @@ const store = useQuizStore();
     flex-shrink: 0;
 }
 .history-btn:hover {
-    background: rgba(124, 51, 40, 0.1);
-    border-color: rgba(124, 51, 40, 0.3);
-    color: #7c3328;
+    background: rgba(var(--clr-p-rgb), 0.1);
+    border-color: rgba(var(--clr-p-rgb), 0.3);
+    color: var(--clr-p);
 }
 .history-btn--active {
-    background: rgba(124, 51, 40, 0.12);
-    border-color: rgba(124, 51, 40, 0.4);
-    color: #7c3328;
+    background: rgba(var(--clr-p-rgb), 0.12);
+    border-color: rgba(var(--clr-p-rgb), 0.4);
+    color: var(--clr-p);
 }
 
 /* Transitions */

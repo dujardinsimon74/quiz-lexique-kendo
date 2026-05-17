@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { LEXIQUE, type Term } from "./data";
+import { LEXIQUE, KYUSHA, type Term } from "./data";
 
 export type Dir    = "jp-fr" | "fr-jp" | "both";
 export type Screen =
@@ -41,8 +41,9 @@ export interface SavedSession {
   mode?: Dir;
   results?: Result[];
   // Commun
-  score: number;   // points libres ou bonnes réponses QCM
-  total: number;   // max points libres ou nb questions QCM
+  score: number;        // points libres ou bonnes réponses QCM
+  total: number;        // max points libres ou nb questions QCM
+  kyushaMode?: boolean; // true = Kyûsha, false/undefined = Yudansha
   // Libre
   libreResults?: LibreResult[];
 }
@@ -84,6 +85,7 @@ interface QcmDraft {
   sessionResults: Result[];
   mode: Dir;
   count: number;
+  kyushaMode: boolean;
 }
 
 interface LibreDraft {
@@ -93,6 +95,7 @@ interface LibreDraft {
   libreScore: number;
   libreResults: LibreResult[];
   libreCount: number;
+  kyushaMode: boolean;
 }
 
 // ─── Utilitaires ─────────────────────────────────────────────────────────────
@@ -154,6 +157,7 @@ function proximityHint(input: string, answer: string): { text: string; level: Hi
 const STORAGE_KEY      = "quiz-kendo-history";
 const DRAFT_KEY        = "quiz-kendo-draft";
 const LIBRE_DRAFT_KEY  = "quiz-kendo-libre-draft";
+const LEVEL_MODE_KEY   = "quiz-kendo-level-mode";
 
 function loadHistory(): SavedSession[] {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null") ?? []; }
@@ -177,6 +181,17 @@ function loadLibreDraft(): LibreDraft | null {
 }
 function persistLibreDraft(d: LibreDraft | null) {
   try { d === null ? localStorage.removeItem(LIBRE_DRAFT_KEY) : localStorage.setItem(LIBRE_DRAFT_KEY, JSON.stringify(d)); } catch {}
+}
+
+// kyushaMode : true = Kyûsha (défaut), false = Yudansha
+function loadLevelMode(): boolean {
+  try {
+    const v = localStorage.getItem(LEVEL_MODE_KEY);
+    return v === null ? true : JSON.parse(v); // true par défaut (Kyûsha)
+  } catch { return true; }
+}
+function persistLevelMode(val: boolean) {
+  try { localStorage.setItem(LEVEL_MODE_KEY, JSON.stringify(val)); } catch {}
 }
 
 // ─── Store ───────────────────────────────────────────────────────────────────
@@ -203,6 +218,9 @@ export const useQuizStore = defineStore("quiz", {
     draft:          loadDraft()       as QcmDraft   | null,
     libreDraft:     loadLibreDraft()  as LibreDraft | null,
 
+    // ── Mode Kyûsha / Yudansha ──
+    kyushaMode:     loadLevelMode(),
+
     // ── Mode Saisie Libre ──
     libreCount:     20,
     libreQuestions: [] as LibreQuestion[],
@@ -214,7 +232,8 @@ export const useQuizStore = defineStore("quiz", {
 
   getters: {
     currentQ:  (state): Question     => state.questions[state.qIndex],
-    allCount:  ():      number       => LEXIQUE.length,
+    allCount:  (state): number       => state.kyushaMode ? KYUSHA.length : LEXIQUE.length,
+    activeLexique: (state): Term[]   => state.kyushaMode ? KYUSHA : LEXIQUE,
 
     hasDraft:  (state): boolean      => state.draft !== null,
     draftProgress: (state) => {
@@ -244,20 +263,22 @@ export const useQuizStore = defineStore("quiz", {
 
   actions: {
     // ── QCM config ──
-    setMode(mode: Dir)      { this.mode  = mode;  },
-    setCount(count: number) { this.count = count; },
+    setMode(mode: Dir)           { this.mode       = mode;  },
+    setCount(count: number)      { this.count      = count; },
+    setKyushaMode(val: boolean)  { this.kyushaMode = val; persistLevelMode(val); },
 
     // ── QCM ──
     startQuiz() {
       this.draft = null; persistDraft(null);
-      const shuffled = shuffle(LEXIQUE);
-      const n = Math.min(this.count >= LEXIQUE.length ? LEXIQUE.length : this.count, LEXIQUE.length);
+      const lex = this.activeLexique;
+      const shuffled = shuffle(lex);
+      const n = Math.min(this.count >= lex.length ? lex.length : this.count, lex.length);
       this.questions = shuffled.slice(0, n).map((term) => {
         const dir: "jp-fr" | "fr-jp" =
           this.mode === "both"
             ? Math.random() < 0.5 ? "jp-fr" : "fr-jp"
             : (this.mode as "jp-fr" | "fr-jp");
-        const wrong = shuffle(LEXIQUE.filter((t) => t.jp !== term.jp)).slice(0, 3);
+        const wrong = shuffle(lex.filter((t) => t.jp !== term.jp)).slice(0, 3);
         const pool  = shuffle([term, ...wrong]);
         const ci    = pool.indexOf(term);
         return {
@@ -278,11 +299,12 @@ export const useQuizStore = defineStore("quiz", {
     resumeQuiz() {
       if (!this.draft) return;
       const d = this.draft;
-      this.questions = d.questions; this.qIndex = d.qIndex;
-      this.answered  = d.answered;  this.selectedIndex = d.selectedIndex;
-      this.score     = d.score;     this.sessionResults = d.sessionResults;
-      this.mode      = d.mode;      this.count = d.count;
-      this.screen    = "quiz";
+      this.questions   = d.questions; this.qIndex = d.qIndex;
+      this.answered    = d.answered;  this.selectedIndex = d.selectedIndex;
+      this.score       = d.score;     this.sessionResults = d.sessionResults;
+      this.mode        = d.mode;      this.count = d.count;
+      this.kyushaMode  = d.kyushaMode ?? false;
+      this.screen      = "quiz";
     },
 
     discardDraft() { this.draft = null; persistDraft(null); },
@@ -293,6 +315,7 @@ export const useQuizStore = defineStore("quiz", {
         answered: this.answered,   selectedIndex: this.selectedIndex,
         score: this.score,         sessionResults: [...this.sessionResults],
         mode: this.mode,           count: this.count,
+        kyushaMode: this.kyushaMode,
       };
       this.draft = d; persistDraft(d);
     },
@@ -326,6 +349,7 @@ export const useQuizStore = defineStore("quiz", {
         id: Date.now().toString(), date: new Date().toISOString(),
         type: "qcm", mode: this.mode,
         score: this.score, total: this.questions.length,
+        kyushaMode: this.kyushaMode,
         results: [...this.sessionResults],
       };
       this._pushToHistory(session);
@@ -336,8 +360,9 @@ export const useQuizStore = defineStore("quiz", {
 
     startLibreQuiz() {
       this.libreDraft = null; persistLibreDraft(null);
-      const shuffled = shuffle(LEXIQUE);
-      const n = Math.min(this.libreCount >= LEXIQUE.length ? LEXIQUE.length : this.libreCount, LEXIQUE.length);
+      const lex = this.activeLexique;
+      const shuffled = shuffle(lex);
+      const n = Math.min(this.libreCount >= lex.length ? lex.length : this.libreCount, lex.length);
       this.libreQuestions = shuffled.slice(0, n).map((term) => ({
         term, question: term.ans, answer: term.jp,
       }));
@@ -356,6 +381,7 @@ export const useQuizStore = defineStore("quiz", {
       this.libreScore     = d.libreScore;
       this.libreResults   = d.libreResults;
       this.libreCount     = d.libreCount;
+      this.kyushaMode     = d.kyushaMode ?? false;
       this.screen = "quiz-libre";
     },
 
@@ -369,6 +395,7 @@ export const useQuizStore = defineStore("quiz", {
         libreScore:     this.libreScore,
         libreResults:   [...this.libreResults],
         libreCount:     this.libreCount,
+        kyushaMode:     this.kyushaMode,
       };
       this.libreDraft = d; persistLibreDraft(d);
     },
@@ -418,6 +445,7 @@ export const useQuizStore = defineStore("quiz", {
         type: "libre",
         score: this.libreScore,
         total: this.libreQuestions.length * 4,
+        kyushaMode: this.kyushaMode,
         libreResults: [...this.libreResults],
       };
       this._pushToHistory(session);

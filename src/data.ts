@@ -214,6 +214,9 @@ export const LEXIQUE: Term[] = [
     cat: "Dôjô",
   },
   { jp: "Shimoza", ans: "Partie du dôjô réservée aux élèves", cat: "Dôjô" },
+  { jp: "Sensei", ans: "Professeur, enseignant", cat: "Dôjô" },
+  { jp: "Sempai", ans: "Pratiquant plus ancien, aîné", cat: "Dôjô" },
+  { jp: "Kohai", ans: "Pratiquant plus jeune, cadet", cat: "Dôjô" },
 
   // Corps
   { jp: "Ashi", ans: "Jambe, pied", cat: "Corps" },
@@ -236,6 +239,7 @@ export const LEXIQUE: Term[] = [
   },
   { jp: "Jôdan no kamae", ans: "Garde haute", cat: "Gardes" },
   { jp: "Gedan no kamae", ans: "Garde basse", cat: "Gardes" },
+  { jp: "Nito no kamae", ans: "Garde à deux sabres", cat: "Gardes" },
   {
     jp: "Hassô no kamae",
     ans: "Garde à mi-hauteur côté droit, pointe vers le haut",
@@ -534,7 +538,7 @@ export const LEXIQUE: Term[] = [
   },
   {
     jp: "Kiri otoshi",
-    ans: "Forme d'Ôji waza : contre-attaque en tranchant l'arme adverse",
+    ans: "A l’origine, trancher, sectionner avec le sabre. Maintenant, forme d’Ôji Waza",
     cat: "Waza",
   },
   {
@@ -641,6 +645,13 @@ export const LEXIQUE: Term[] = [
   // Commandements
   { jp: "Hajime", ans: "Commencez", cat: "Commandements" },
   { jp: "Yame", ans: "Cessez", cat: "Commandements" },
+  { jp: "Mokuso", ans: "Méditation assise (début et fin de séance)", cat: "Commandements" },
+  { jp: "Mokuso yame", ans: "Fin de la méditation", cat: "Commandements" },
+  {
+    jp: "Onegai shimasu",
+    ans: "Formule de politesse pour demander un entraînement (début de keiko)",
+    cat: "Commandements",
+  },
   { jp: "Seiretsu", ans: "Alignez-vous", cat: "Commandements" },
   { jp: "Migi", ans: "Droite", cat: "Commandements" },
   { jp: "Hidari", ans: "Gauche", cat: "Commandements" },
@@ -904,3 +915,27 @@ export const LEXIQUE: Term[] = [
     cat: "Vocabulaire général",
   },
 ];
+
+// ─── Mode Kyûsha ─────────────────────────────────────────────────────────────
+// Sous-ensemble de termes pour les pratiquants de niveau Kyû (débutants/intermédiaires)
+// Source : lexique du Dojo Nantais (dojonantais.com/lexique-kendo)
+
+export const KYUSHA_KEYS = new Set([
+  // Équipement & Tenue
+  "Bôgu", "Men", "Kote", "Dô", "Tare", "Hakama", "Keikogi", "Tenugui", "Shinai", "Bokutô",
+  // Positions & Déplacements
+  "Kamae", "Chûdan no kamae", "Jôdan no kamae", "Gedan no kamae", "Nito no kamae",
+  "Okuri ashi", "Ayumi ashi", "Hiraki ashi", "Ma aï",
+  // Pratique & Entraînement
+  "Keiko", "Ji geiko", "Kakari geiko", "Uchi komi geiko", "Suburi", "Kiri kaeshi", "Moto dachi",
+  // Techniques & Frappes
+  "Datotsu Bui", "Waza", "Debana waza", "Nuki waza", "Kaeshi waza", "Harai waza", "Hari waza", "Tsuki",
+  // Attitude & Esprit
+  "Zanshin", "Kiai", "Ki Ken Taï no Ichi",
+  // Structure & Culture
+  "Dôjô", "Sensei", "Sempai", "Kohai", "Rei", "Mokuso", "Mokuso yame", "Kata", "Kendô no kata",
+  // Ordres & Expressions
+  "Seiza", "Hajime", "Yame", "Onegai shimasu", "Arigatô gozaimashita",
+]);
+
+export const KYUSHA: Term[] = LEXIQUE.filter((t) => KYUSHA_KEYS.has(t.jp));

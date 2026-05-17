@@ -13,7 +13,7 @@
       <div class="text-right">
         <div class="section-label mb-0.5">Points</div>
         <div class="text-lg font-black tabular-nums" style="color:#261e16; line-height:1.1;">
-          <span style="color:#7c3328;">{{ store.libreScore }}</span>
+          <span style="color: var(--clr-p);">{{ store.libreScore }}</span>
           <span style="color:#c8b89a; font-size:0.8rem;"> / {{ store.libreResults.length * 4 }}</span>
         </div>
       </div>
@@ -216,7 +216,7 @@ onUnmounted(() => window.removeEventListener("keydown", onKeydown));
 .dot-ko    { background: #c04040; transform: scale(1.1); }
 .dot-ok    { background: #3a8050; transform: scale(1.1); }
 
-.text-attempts { color: #7c3328; font-size: 0.72rem; }
+.text-attempts { color: var(--clr-p); font-size: 0.72rem; }
 
 /* Zone saisie */
 .input-wrap {
@@ -229,7 +229,7 @@ onUnmounted(() => window.removeEventListener("keydown", onKeydown));
   overflow: hidden;
   transition: border-color 0.2s;
 }
-.input-wrap:focus-within { border-color: rgba(124, 51, 40, 0.50); }
+.input-wrap:focus-within { border-color: rgba(var(--clr-p-rgb), 0.50); }
 .input-close { border-color: rgba(46, 94, 56, 0.45) !important; }
 .input-near  { border-color: rgba(139, 106, 26, 0.50) !important; }
 
@@ -248,15 +248,15 @@ onUnmounted(() => window.removeEventListener("keydown", onKeydown));
 
 .submit-btn {
   padding: 0.85rem 1rem;
-  background: #7c3328;
+  background: var(--clr-p);
   color: #fff8f0;
   border: none;
   cursor: pointer;
-  transition: background 0.18s;
+  transition: background 0.35s;
   display: flex;
   align-items: center;
 }
-.submit-btn:hover:not(:disabled) { background: #922e22; }
+.submit-btn:hover:not(:disabled) { background: var(--clr-p-lighter); }
 .submit-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
 /* Indice */
@@ -324,15 +324,15 @@ onUnmounted(() => window.removeEventListener("keydown", onKeydown));
   font-weight: 700;
   letter-spacing: 0.04em;
   color: #fff8f0;
-  background: linear-gradient(135deg, #8b3a2a 0%, #7c3328 100%);
-  border: 1px solid rgba(100, 32, 24, 0.4);
+  background: linear-gradient(135deg, var(--clr-p-light) 0%, var(--clr-p) 100%);
+  border: 1px solid rgba(var(--clr-p-rgb), 0.4);
   cursor: pointer;
-  transition: all 0.22s;
+  transition: background 0.35s, box-shadow 0.35s, transform 0.22s;
 }
 .next-btn:hover {
-  background: linear-gradient(135deg, #9c4232 0%, #8b3a2a 100%);
+  background: linear-gradient(135deg, var(--clr-p-lighter) 0%, var(--clr-p-light) 100%);
   transform: translateY(-1px);
-  box-shadow: 0 4px 18px rgba(124, 51, 40, 0.28);
+  box-shadow: 0 4px 18px rgba(var(--clr-p-rgb), 0.28);
 }
 
 /* Bouton accueil */
@@ -348,8 +348,8 @@ onUnmounted(() => window.removeEventListener("keydown", onKeydown));
   transition: all 0.2s;
 }
 .home-btn:hover {
-  color: #7c3328;
-  border-color: rgba(124, 51, 40, 0.28);
+  color: var(--clr-p);
+  border-color: rgba(var(--clr-p-rgb), 0.28);
   background: rgba(255, 252, 248, 0.95);
 }
 

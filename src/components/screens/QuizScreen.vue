@@ -126,9 +126,9 @@ function letterClass(i: number): string {
 }
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #a05030, #7c3328);
+  background: linear-gradient(90deg, var(--clr-p-light), var(--clr-p));
   border-radius: 99px;
-  transition: width 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: width 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), background 0.35s;
 }
 
 /* Badge direction */
@@ -137,10 +137,11 @@ function letterClass(i: number): string {
   font-weight: 700;
   padding: 0.2rem 0.55rem;
   border-radius: 99px;
-  background: rgba(124, 51, 40, 0.07);
-  border: 1px solid rgba(124, 51, 40, 0.22);
-  color: #7c3328;
+  background: rgba(var(--clr-p-rgb), 0.07);
+  border: 1px solid rgba(var(--clr-p-rgb), 0.22);
+  color: var(--clr-p);
   letter-spacing: 0.04em;
+  transition: background 0.35s, border-color 0.35s, color 0.35s;
 }
 
 /* Options */
@@ -165,7 +166,7 @@ function letterClass(i: number): string {
 }
 .opt-idle:hover {
   background: rgba(255, 252, 248, 0.95);
-  border-color: rgba(124, 51, 40, 0.28);
+  border-color: rgba(var(--clr-p-rgb), 0.28);
   color: #261e16;
   transform: translateX(3px);
   box-shadow: 0 2px 10px rgba(80,60,38,0.08);
@@ -217,20 +218,20 @@ function letterClass(i: number): string {
   width: 100%;
   padding: 0.875rem;
   border-radius: 0.875rem;
-  border: 1px solid rgba(124, 51, 40, 0.30);
-  background: linear-gradient(135deg, #8b3a2a 0%, #7c3328 100%);
+  border: 1px solid rgba(var(--clr-p-rgb), 0.30);
+  background: linear-gradient(135deg, var(--clr-p-light) 0%, var(--clr-p) 100%);
   color: #fff;
   font-weight: 700;
   font-size: 0.875rem;
   letter-spacing: 0.04em;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 3px 14px rgba(124,51,40,0.18);
+  transition: background 0.35s, box-shadow 0.35s, transform 0.2s, border-color 0.35s;
+  box-shadow: 0 3px 14px rgba(var(--clr-p-rgb), 0.18);
 }
 .next-btn:hover {
-  background: linear-gradient(135deg, #9c4232 0%, #8b3a2a 100%);
+  background: linear-gradient(135deg, var(--clr-p-lighter) 0%, var(--clr-p-light) 100%);
   transform: translateY(-1px);
-  box-shadow: 0 5px 20px rgba(124,51,40,0.26);
+  box-shadow: 0 5px 20px rgba(var(--clr-p-rgb), 0.26);
 }
 
 /* Bouton retour */
@@ -249,8 +250,8 @@ function letterClass(i: number): string {
 }
 .back-btn:hover {
   background: rgba(255, 252, 248, 0.92);
-  color: #7c3328;
-  border-color: rgba(124, 51, 40, 0.28);
+  color: var(--clr-p);
+  border-color: rgba(var(--clr-p-rgb), 0.28);
 }
 
 /* Transitions */
